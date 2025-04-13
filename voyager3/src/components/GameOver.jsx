@@ -1,21 +1,30 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { use } from 'react'; // Import the use hook from React
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { planets } from '@/data/planets';
+import FactButton from '@/components/FactButton';
+import FactDisplay from '@/components/FactDisplay';
+import PlanetNavigation from '@/components/PlanetNavigation';
 
 export default function GameOver() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-amber-100">
-      <h1 className="text-4xl font-bold mb-6 text-amber-800">You've Been Fried by the Sun!</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-black">
+      <h1 className="text-4xl font-bold mb-6 text-yellow">You've Been Fried by the Sun!</h1>
       
       <div className="relative w-64 h-64 mb-8">
         <Image
-          src="/images/sun.jpg" // You'll need this image
+          src="/sun.png" // You'll need this image
           alt="The Sun"
           fill
           className="object-contain"
         />
       </div>
       
-      <p className="text-xl mb-8 text-amber-800 max-w-md">
+      <p className="text-xl mb-8 text-yellow max-w-md">
         With temperatures over 27 million degrees, nothing can survive this close to our star!
       </p>
       
