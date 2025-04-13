@@ -2,18 +2,14 @@ import { motion } from 'framer-motion';
 
 export default function FactButton({ title, onClick }) {
   return (
-    <motion.button
+    <button
       onClick={onClick}
-      className="bg-gradient-to-r from-indigo-800/70 to-blue-900/70 hover:from-indigo-700/80 hover:to-blue-800/80 
-                text-white px-5 py-3 rounded-xl backdrop-blur-sm border border-indigo-500/30
-                transition-all shadow-lg shadow-blue-900/20"
-      whileHover={{ 
-        scale: 1.03,
-        boxShadow: "0 0 15px rgba(100, 150, 255, 0.3)"
-      }}
-      whileTap={{ scale: 0.97 }}
+      className="bg-gradient-to-r from-blue-900/70 to-indigo-900/70 hover:from-blue-800/80 hover:to-indigo-800/80 
+                text-white px-4 py-3 rounded-lg backdrop-blur-sm border border-blue-500/30
+                transition-all shadow-lg shadow-blue-900/20 w-full h-full flex items-center justify-center
+                min-h-[60px]"
     >
-      <div className="font-medium text-lg">{title}</div>
-    </motion.button>
+      <div className="font-medium text-lg text-center">{title}</div>
+    </button>
   );
 }
