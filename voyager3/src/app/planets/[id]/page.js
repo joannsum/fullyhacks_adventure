@@ -11,6 +11,7 @@ import FactDisplay from '@/components/FactDisplay';
 import PlanetNavigation from '@/components/PlanetNavigation';
 import GameOver from '@/components/GameOver';
 import GeneratedPlanetImage from '@/components/GeneratedPlanetImage';
+// import rover from '/sidebooster.png';
 
 // Star component using framer motion with fixed animation duration
 const Star = ({ style, duration }) => {
@@ -456,7 +457,7 @@ export default function PlanetPage() {
         </motion.h1>
         
         <motion.div 
-          className="w-64 h-64 relative mb-8"
+          className="w-64 h-64 relative"
           variants={planetImageVariants}
         >
           <motion.div
@@ -477,6 +478,7 @@ export default function PlanetPage() {
                 className="object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
                 priority
               />
+              
             )}
           </motion.div>
 
@@ -489,13 +491,25 @@ export default function PlanetPage() {
             }}
           />
         </motion.div>
-        
-        <motion.p 
-          className="text-center max-w-md mb-8 text-white"
-          variants={itemVariants}
-        >
-          {description}
-        </motion.p>
+        <motion.div className="flex items-center">
+  <motion.p
+    className="relative w-30 h-30 mb-8 md:w-1/5"
+  >
+    <Image
+      src="/sidebooster.png" // You'll need this image
+      alt="rover"
+      fill
+      className="object-contain"
+    />
+  </motion.p>
+
+  <motion.p
+    className="text-center max-w-md mb-8 text-white md:w-4/5 ml-4"
+    variants={itemVariants}
+  >
+    {description}
+  </motion.p>
+</motion.div>
         
         <motion.div 
           className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 w-full max-w-3xl"
