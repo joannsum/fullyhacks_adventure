@@ -7,3 +7,4 @@ const SpaceExplorer = dynamic(() => import("@/components/SpaceExplorer"), { ssr:
 export default function Home() {
   return <SpaceExplorer />; 
 } 
+
