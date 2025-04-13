@@ -427,6 +427,7 @@ export default function PlanetPage({ params }) {
     </main>
   );
 }
+// this 
 
 // Helper function to get a color for each planet's glow
 function getPlanetColor(planetId) {
