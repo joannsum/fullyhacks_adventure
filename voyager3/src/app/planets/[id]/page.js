@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
-import { use } from 'react'; // Import the use hook from React
 import Image from 'next/image';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { planets } from '@/data/planets';
@@ -11,6 +10,7 @@ import FactButton from '@/components/FactButton';
 import FactDisplay from '@/components/FactDisplay';
 import PlanetNavigation from '@/components/PlanetNavigation';
 import GameOver from '@/components/GameOver';
+import GeneratedPlanetImage from '@/components/GeneratedPlanetImage';
 
 // Star component using framer motion with fixed animation duration
 const Star = ({ style, duration }) => {
@@ -108,30 +108,112 @@ const NebulaCloud = ({ style }) => {
   );
 };
 
-export default function PlanetPage({ params }) {
-    const unwrappedParams = use(params);
-    const { id } = unwrappedParams;
-    const router = useRouter();
-    const [selectedFact, setSelectedFact] = useState(null);
-    const [stars, setStars] = useState([]);
-    const [dustParticles, setDustParticles] = useState([]);
-    const [glowingStars, setGlowingStars] = useState([]);
-    const [nebulaClouds, setNebulaClouds] = useState([]);
-    const [isClient, setIsClient] = useState(false);
+export default function PlanetPage() {
+  const params = useParams();
+  const { id } = params;
+  const router = useRouter();
+  const [selectedFact, setSelectedFact] = useState(null);
+  const [stars, setStars] = useState([]);
+  const [dustParticles, setDustParticles] = useState([]);
+  const [glowingStars, setGlowingStars] = useState([]);
+  const [nebulaClouds, setNebulaClouds] = useState([]);
+  const [isClient, setIsClient] = useState(false);
+  const [currentPlanet, setCurrentPlanet] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAIGenerated, setIsAIGenerated] = useState(false);
+  const [windowSize, setWindowSize] = useState({ width: 1000, height: 1000 });
   
-    // Mouse parallax effect
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-    const springConfig = { stiffness: 100, damping: 30 };
-    const smoothMouseX = useSpring(mouseX, springConfig);
-    const smoothMouseY = useSpring(mouseY, springConfig);
+  // Mouse parallax effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springConfig = { stiffness: 100, damping: 30 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
   
-  // Find the current planet
-  const currentPlanet = planets.find(planet => planet.id === id);
+  // Always define these transforms - fixes the hook order issue
+  const planetX = useTransform(smoothMouseX, [0, windowSize.width], [-10, 10]);
+  const planetY = useTransform(smoothMouseY, [0, windowSize.height], [-10, 10]);
   
-  // Generate space background elements
+  // Fetch planet data - either from local planets or from API
+  useEffect(() => {
+    const enableAIPlanets = process.env.NEXT_PUBLIC_ENABLE_AI_PLANETS === 'true';
+    
+    const fetchPlanet = async () => {
+      setIsLoading(true);
+      
+      // Check if this is a local planet
+      const localPlanet = planets.find(planet => planet.id === id);
+      
+      if (localPlanet) {
+        setCurrentPlanet(localPlanet);
+        setIsAIGenerated(false);
+        setIsLoading(false);
+        return;
+      }
+      
+      // If not found locally and the ID starts with "ai-planet-", this is a dynamically generated planet
+      if (enableAIPlanets && id.startsWith('ai-planet-')) {
+        try {
+          const position = parseInt(id.replace('ai-planet-', ''));
+          const response = await fetch(`/api/planets?position=${position}`);
+          
+          if (response.ok) {
+            const data = await response.json();
+            setCurrentPlanet(data);
+            setIsAIGenerated(true);
+            setIsLoading(false);
+          } else {
+            // If API call fails, redirect to home
+            router.push('/');
+          }
+        } catch (error) {
+          console.error("Error fetching AI planet:", error);
+          router.push('/');
+        }
+        return;
+      }
+      
+      // For any other ID pattern, try to fetch from the API
+      if (enableAIPlanets) {
+        try {
+          const response = await fetch(`/api/planets?id=${id}`);
+          
+          if (response.ok) {
+            const data = await response.json();
+            setCurrentPlanet(data);
+            setIsAIGenerated(data.image?.startsWith('/generated'));
+            setIsLoading(false);
+          } else {
+            // If not found, redirect to home
+            router.push('/');
+          }
+        } catch (error) {
+          console.error("Error fetching planet:", error);
+          router.push('/');
+        }
+      } else {
+        // If AI planets are disabled and we can't find the planet locally, redirect
+        router.push('/');
+      }
+    };
+    
+    fetchPlanet();
+  }, [id, router]);
+  
+  // Generate space background elements and handle client-side setup
   useEffect(() => {
     setIsClient(true);
+    
+    // Update window size for parallax effect
+    const updateWindowSize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+    
+    // Initial size update
+    updateWindowSize();
     
     // Generate stars with fixed random values
     const newStars = [];
@@ -203,7 +285,23 @@ export default function PlanetPage({ params }) {
           nebulaColors = ["rgba(160, 160, 180, 0.1)", "rgba(140, 140, 160, 0.1)"];
           break;
         default:
-          nebulaColors = ["rgba(130, 80, 170, 0.1)", "rgba(100, 150, 200, 0.1)"];
+          if (isAIGenerated) {
+            // For AI planets, create unique nebula colors based on the planet's ID
+            const hash = currentPlanet.id.split('').reduce((acc, char) => {
+              return char.charCodeAt(0) + ((acc << 5) - acc);
+            }, 0);
+            
+            // Generate HSL colors with good saturation and lightness
+            const h1 = Math.abs(hash) % 360;
+            const h2 = (Math.abs(hash) + 120) % 360; // Add 120 degrees for complementary color
+            
+            nebulaColors = [
+              `hsla(${h1}, 70%, 30%, 0.1)`,
+              `hsla(${h2}, 60%, 40%, 0.1)`
+            ];
+          } else {
+            nebulaColors = ["rgba(130, 80, 170, 0.1)", "rgba(100, 150, 200, 0.1)"];
+          }
       }
     } else {
       nebulaColors = ["rgba(80, 120, 200, 0.1)", "rgba(130, 80, 170, 0.1)"];
@@ -244,11 +342,15 @@ export default function PlanetPage({ params }) {
       mouseY.set(e.clientY);
     };
     
+    // Window resize handler
+    window.addEventListener("resize", updateWindowSize);
     window.addEventListener("mousemove", handleMouseMove);
+    
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("resize", updateWindowSize);
     };
-  }, [id, mouseX, mouseY, currentPlanet]);
+  }, [id, mouseX, mouseY, currentPlanet, isAIGenerated]);
   
   if (!currentPlanet) return (
     <div className="min-h-screen bg-black flex justify-center items-center">
@@ -299,9 +401,9 @@ export default function PlanetPage({ params }) {
     }
   };
   
-  // Calculate parallax effects for the planet image
-  const planetX = useTransform(smoothMouseX, [0, window?.innerWidth || 1000], [-10, 10]);
-  const planetY = useTransform(smoothMouseY, [0, window?.innerHeight || 1000], [-10, 10]);
+  // For AI-generated planets, normalize the data structure
+  const description = currentPlanet.description || currentPlanet.bio || "";
+  const facts = currentPlanet.facts || [];
   
   return (
     <main className="bg-black text-white min-h-screen overflow-hidden relative">
@@ -341,11 +443,16 @@ export default function PlanetPage({ params }) {
         animate="visible"
       >
         <motion.h1 
-          className="text-3xl md:text-5xl font-bold mb-6 text-center text-white"
+          className="text-3xl md:text-5xl font-bold mb-6 text-center text-white flex items-center gap-3 justify-center"
           variants={itemVariants}
           style={{ textShadow: '0 0 15px rgba(255, 255, 255, 0.5)' }}
         >
           {currentPlanet.name}
+          {isAIGenerated && (
+            <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">
+              AI Generated
+            </span>
+          )}
         </motion.h1>
         
         <motion.div 
@@ -360,20 +467,24 @@ export default function PlanetPage({ params }) {
               height: '100%'
             }}
           >
-            <Image
-              src={currentPlanet.image}
-              alt={currentPlanet.name}
-              fill
-              className="object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-              priority
-            />
+            {isAIGenerated ? (
+              <GeneratedPlanetImage planetName={currentPlanet.name} size={256} />
+            ) : (
+              <Image
+                src={currentPlanet.image}
+                alt={currentPlanet.name}
+                fill
+                className="object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                priority
+              />
+            )}
           </motion.div>
 
           {/* Glow effect behind planet */}
           <div 
             className="absolute inset-0 rounded-full blur-xl -z-10 opacity-30"
             style={{
-              backgroundColor: getPlanetColor(currentPlanet.id),
+              backgroundColor: getPlanetColor(currentPlanet.id, isAIGenerated),
               transform: 'scale(0.9)'
             }}
           />
@@ -383,14 +494,14 @@ export default function PlanetPage({ params }) {
           className="text-center max-w-md mb-8 text-white"
           variants={itemVariants}
         >
-          {currentPlanet.bio}
+          {description}
         </motion.p>
         
         <motion.div 
           className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 w-full max-w-3xl"
           variants={itemVariants}
         >
-          {currentPlanet.facts.map((fact, index) => (
+          {facts.map((fact, index) => (
             <motion.div
               key={index}
               whileHover={{ scale: 1.05 }}
@@ -427,10 +538,23 @@ export default function PlanetPage({ params }) {
     </main>
   );
 }
-// this 
 
 // Helper function to get a color for each planet's glow
-function getPlanetColor(planetId) {
+function getPlanetColor(planetId, isAI = false) {
+  if (isAI) {
+    // Generate a color based on the planet's ID for AI planets
+    const hash = planetId.split('').reduce((acc, char) => {
+      return char.charCodeAt(0) + ((acc << 5) - acc);
+    }, 0);
+    
+    // Generate HSL color with good saturation and lightness
+    const h = Math.abs(hash) % 360;
+    const s = 70 + (Math.abs(hash) % 20); // 70-90%
+    const l = 40 + (Math.abs(hash) % 20); // 40-60%
+    
+    return `hsla(${h}, ${s}%, ${l}%, 0.6)`;
+  }
+  
   const colors = {
     mercury: "rgba(180, 180, 180, 0.6)",
     venus: "rgba(230, 180, 100, 0.6)",
