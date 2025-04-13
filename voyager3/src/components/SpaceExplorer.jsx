@@ -233,7 +233,7 @@ const SpaceExplorer = () => {
         >
           <motion.div className="flex flex-col items-center" variants={itemVariants}>
             <motion.h1
-              className="text-white text-[40px] sm:text-[60px] md:text-[80px] lg:text-[90px] leading-tight"
+              className="text-white text-[40px] sm:text-[60px] md:text-[80px] lg:text-[90px] leading-tight font-bungee-hairline"
               style={{ textShadow: '0 0 20px rgba(100, 200, 255, 0.9)' }}
               animate={{ textShadow: ['0 0 20px rgba(100, 200, 255, 0.9)', '0 0 30px rgba(100, 200, 255, 1.0)', '0 0 20px rgba(100, 200, 255, 0.9)'] }}
               transition={{ repeat: Infinity, duration: 3 }}
