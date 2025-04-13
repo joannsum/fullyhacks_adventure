@@ -4,21 +4,18 @@
 
 > The Universe at Your Fingertips
 
-Voyager3 is an interactive web platform that lets users explore AI-generated planets and cosmic wonders. As space program funding faces cuts and youth interest in astronomy declines, we're reigniting curiosity about what lies beyond Earth—because nothing is impossible when exploration meets imagination.
+Voyager3 is an interactive web platform that lets users learn about planets in the solar system and also explore AI-generated planets. As space program funding faces cuts and youth interest in astronomy declines, we're reigniting curiosity about what lies beyond Earth—because nothing is impossible when exploration meets imagination.
 
 ## 🌌 Features
 
-- **AI-Generated Planets**: Unique celestial bodies created using Google's Gemini API
-- **Interactive Exploration**: Navigate seamlessly through our virtual universe
-- **Mini-Games**: Space shooter challenges between planetary systems
 - **Educational Content**: Learn about astronomy while having fun
-- **Responsive Design**: Optimized for desktop and mobile devices
+- **AI-Generated Planets**: Unique celestial bodies created using Google's Gemini API
+- **Mini-Games**: Play a survival mini-game as you travel to different planets
 
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js
 - **AI Generation**: Google Gemini API
-- **Animation**: Framer Motion
 - **Deployment**: Vercel
 
 ## 🚀 Getting Started
