@@ -4,7 +4,7 @@ import Image from 'next/image';
 export default function GameOver2({ onRetry, onReturn, destination }) {
   return (
     <div className="absolute inset-0 bg-gray-900 bg-opacity-90 flex flex-col items-center justify-center rounded-lg p-4">
-      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-red-500">Your Ship Was Destroyed by Asteroids!</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-red-500">Your Ship Was Destroyed by Asteroids within 10s!</h1>
       
       <div className="relative w-32 h-32 mb-4">
         <div className="w-full h-full flex items-center justify-center">
