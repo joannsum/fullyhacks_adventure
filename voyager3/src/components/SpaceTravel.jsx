@@ -174,6 +174,7 @@ export default function SpaceTravel({ destination, onCancel }) {
         );
         
         if (distanceToTip < asteroid.size + 5) {
+          setCountdown(10000000000000000000000)
           setGameState('gameOver2');
           return;
         }
