@@ -9,10 +9,10 @@ export default function Home() {
       <p className="text-xl mb-8">Begin your journey through our solar system!</p>
       
       <Image
-        src="/images/solar-system.jpg"//temp
+        src="/Mercury_in_true_color.jpg"//temp
         alt="Solar System"
         width={400}
-        height={250}
+        height={400}
         className="rounded-lg mb-8"
       />
       

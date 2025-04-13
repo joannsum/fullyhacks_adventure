@@ -1,0 +1,98 @@
+[
+    {
+        "id": "mercury",
+        "name": "Mercury",
+        "position": 1,
+        "image": "/mercury.png",
+        "bio": "The smallest and innermost planet in the solar system. Named after the fastest god in Roman mythology.",
+        "facts": [
+            {"title": "Surface Temperature", "content": "Can reach 800°F (430°C) during the day and -290°F (-180°C) at night" },
+            {"title": "Day Length", "content": "59 Earth days" },
+            {"title": "Year Length", "content": "88 Earth days."}
+        ]
+    },
+    {
+        "id": "venus",
+        "name": "Venus",
+        "position": 2,
+        "image": "/venus.png",
+        "bio": "Earth's closest planetary neighbor and similar in structure and size, Venus is sometimes called Earth's evil twin. Venus is the third brightest object in the sky after the Sun and Moon, and spins slowly in the opposite direction from most planets.",
+        "facts": [
+            {"title": "Surface Temperature", "content": "Temperatures range from 86 to 158 Fahrenheit (30 to 70 Celsius), hot enough to melt lead, making it the hottest planet in our solar system."},
+            {"title": "Day Length", "content": "243 Earth days"},
+            {"title": "Year Length", "content": "225 Earth days."}
+        ]
+    },
+    {
+        "id": "earth",
+        "name": "Earth",
+        "position": 3,
+        "image": "/earth.png",
+        "bio": "The only planet in our solar system with life, you probably live here too.",
+        "facts": [
+            {"title": "Surface Temperature", "content": "Ranges from 14 °C at the surface to 5,400 °C in the inner core"},
+            {"title": "Day Length", "content": "24 Earth Hours"},
+            {"title": "Year Length", "content": "365 Earth Days"}
+        ]
+    },
+    {
+        "id": "mars",
+        "name": "Mars",
+        "position": 4,
+        "image": "/mars.png",
+        "bio": "Frequently called the \"Red Planet\" because iron minerals in the Martian dirt oxidize, or rust, causing the surface to look red.",
+        "facts": [
+            {"title": "Surface Temperature", "content": "Ranges from 14 °C at the surface to 5,400 °C in the inner core"},
+            {"title": "Day Length", "content": "24.6 Earth Hours"},
+            {"title": "Year Length", "content": "687 Earth Days"}
+        ]
+    },
+    {
+        "id": "jupiter",
+        "name": "Jupiter",
+        "position": 5,
+        "image": "/jupiter.png",
+        "bio": "The largest planet in the solar system, named after the king of the gods in Roman mythology.",
+        "facts": [
+            {"title": "Surface Temperature", "content": "Between -110 °C and -160 °C depending on altitude and latitude"},
+            {"title": "Day Length", "content": "9.9 Earth Hours"},
+            {"title": "Year Length", "content": "12 Earth Years"}
+        ]
+    },
+    {
+        "id": "saturn",
+        "name": "Saturn",
+        "position": 6,
+        "image": "/saturn.png",
+        "bio": "Made mostly of hydrogen and helium and having the most spectacular rings. Saturn is a rich source of scientific discovery and still holds many mysteries.",
+        "facts": [
+            {"title": "Surface Temperature", "content": "About 130 °C"},
+            {"title": "Day Length", "content": "10.7 Earth Hours"},
+            {"title": "Year Length", "content": "29.4 Earth Years"}
+        ]
+    },
+    {
+        "id": "uranus",
+        "name": "Uranus",
+        "position": 7,
+        "image": "/uranus.png",
+        "bio": "The ice giant surrounded by 13 faint rings and 28 small moons. Uranus appears to spin sideways, rotating at a nearly 90-degree angle from the plane of its orbit.",
+        "facts": [
+            {"title": "Surface Temperature", "content": "Nearly -224 °C"},
+            {"title": "Day Length", "content": "17 Earth Hours"},
+            {"title": "Year Length", "content": "84 Earth Years"}
+        ]
+    },
+    {
+        "id": "neptune",
+        "name": "Neptune",
+        "position": 8,
+        "image": "/neptune.png",
+        "bio": "The only planet in our solar system not visible to the naked eye. Neptune is roughly 900 times less sunlight than Earth.",
+        "facts": [
+            {"title": "Surface Temperature", "content": "Average temperature is -214 °C"},
+            {"title": "Day Length", "content": "16 Earth Hours"},
+            {"title": "Year Length", "content": "165 Earth Years"}
+        ]
+    }
+]

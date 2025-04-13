@@ -1,3 +1,7 @@
+import planetsData from './info.json'
+
+export const planets = planetsData;
+/*
 // data/planets.js
 export const planets = [
     {
@@ -35,3 +39,4 @@ export const planets = [
       image: "/images/sun.jpg",
     }
   ];
+  */
