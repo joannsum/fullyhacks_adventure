@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SpaceTravel from './SpaceTravel';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export default function PlanetNavigation({ currentPlanetId, planets }) {
   const router = useRouter();
   const [spaceTravel, setSpaceTravel] = useState(null);
   
-  // Find current planet
+
   const currentIndex = planets.findIndex(planet => planet.id === currentPlanetId);
   if (currentIndex === -1) {
     console.error('Planet not found:', currentPlanetId);
@@ -19,9 +21,6 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
   // Find adjacent planets
   const towardSunPlanet = planets.find(p => p.position === currentPlanet.position - 1);
   const awayFromSunPlanet = planets.find(p => p.position === currentPlanet.position + 1);
-  
-  console.log('Toward sun:', towardSunPlanet);
-  console.log('Away from sun:', awayFromSunPlanet);
   
   const startSpaceTravel = (destination) => {
     console.log('Starting travel to:', destination);

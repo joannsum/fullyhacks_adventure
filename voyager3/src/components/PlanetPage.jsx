@@ -1,21 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { planets } from '@/data/planets';
 import FactButton from '@/components/FactButton';
 import FactDisplay from '@/components/FactDisplay';
 import PlanetNavigation from '@/components/PlanetNavigation';
 import GameOver from '@/components/GameOver';
 
-export default function PlanetPage() {
-  // Fix the params warning by using useParams hook
-  const params = useParams();
-  const id = params.id;
-  
 // Star component using framer motion with fixed animation duration
 const Star = ({ style, duration }) => {
   return (
@@ -303,8 +297,8 @@ export default function PlanetPage({ params }) {
   };
   
   // Calculate parallax effects for the planet image
-  const planetX = useTransform(smoothMouseX, [0, window?.innerWidth || 1000], [-10, 10]);
-  const planetY = useTransform(smoothMouseY, [0, window?.innerHeight || 1000], [-10, 10]);
+  const planetX = useTransform(smoothMouseX, [0, window?.innerWidth || 1000], [-15, 15]);
+  const planetY = useTransform(smoothMouseY, [0, window?.innerHeight || 1000], [-15, 15]);
   
   return (
     <main className="bg-black text-white min-h-screen overflow-hidden relative">
@@ -337,96 +331,103 @@ export default function PlanetPage({ params }) {
       )}
       
       {/* Content area with parallax effect */}
-      <motion.div
-        className="flex flex-col items-center min-h-screen p-8 relative z-10"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.h1 
-          className="text-3xl md:text-5xl font-bold mb-6 text-center text-white"
-          variants={itemVariants}
-          style={{ textShadow: '0 0 15px rgba(255, 255, 255, 0.5)' }}
+      <div className="relative z-10 container mx-auto px-4 py-8">
+        <motion.div
+          className="flex flex-col items-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          {currentPlanet.name}
-        </motion.h1>
-        
-        <motion.div 
-          className="w-64 h-64 relative mb-8"
-          variants={planetImageVariants}
-        >
-          <motion.div
-            style={{
-              x: isClient ? planetX : 0,
-              y: isClient ? planetY : 0,
-              width: '100%',
-              height: '100%'
-            }}
+          {/* Planet name */}
+          <motion.h1 
+            className="text-4xl md:text-5xl font-bold mb-6 text-center"
+            style={{ textShadow: '0 0 15px rgba(255, 255, 255, 0.5)' }}
+            variants={itemVariants}
           >
-            <Image
-              src={currentPlanet.image}
-              alt={currentPlanet.name}
-              fill
-              className="object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-              priority
-            />
-          </motion.div>
-
-          {/* Glow effect behind planet */}
-          <div 
-            className="absolute inset-0 rounded-full blur-xl -z-10 opacity-30"
-            style={{
-              backgroundColor: getPlanetColor(currentPlanet.id),
-              transform: 'scale(0.9)'
-            }}
-          />
-        </motion.div>
-        
-        <motion.p 
-          className="text-center max-w-md mb-8 text-white"
-          variants={itemVariants}
-        >
-          {currentPlanet.description}
-        </motion.p>
-        
-        <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 w-full max-w-3xl"
-          variants={itemVariants}
-        >
-          {currentPlanet.facts.map((fact, index) => (
+            {currentPlanet.name}
+          </motion.h1>
+          
+          {/* Planet image with parallax hover effect */}
+          <motion.div 
+            className="relative w-64 h-64 md:w-80 md:h-80 mb-8"
+            variants={planetImageVariants}
+          >
             <motion.div
-              key={index}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              style={{
+                x: planetX,
+                y: planetY
+              }}
+              className="w-full h-full"
             >
-              <FactButton 
-                title={fact.title}
-                onClick={() => setSelectedFact(fact)}
+              <Image
+                src={currentPlanet.image}
+                alt={currentPlanet.name}
+                fill
+                className="object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                priority
               />
             </motion.div>
-          ))}
+            
+            {/* Glow effect behind planet */}
+            <div 
+              className="absolute inset-0 rounded-full blur-xl -z-10 opacity-30"
+              style={{
+                backgroundColor: getPlanetColor(currentPlanet.id),
+                transform: 'scale(0.9)'
+              }}
+            />
+          </motion.div>
+          
+          {/* Description */}
+          <motion.p 
+            className="text-center max-w-2xl mb-12 text-lg"
+            variants={itemVariants}
+          >
+            {currentPlanet.description}
+          </motion.p>
+          
+          {/* Fact buttons */}
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10 w-full max-w-4xl"
+            variants={itemVariants}
+          >
+            {currentPlanet.facts.map((fact, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FactButton 
+                  title={fact.title}
+                  onClick={() => setSelectedFact(fact)}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+          
+          {/* Fact display */}
+          <AnimatePresence mode="wait">
+            {selectedFact && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="w-full max-w-4xl mb-10"
+              >
+                <FactDisplay fact={selectedFact} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
+          {/* Navigation */}
+          <motion.div 
+            className="w-full max-w-4xl"
+            variants={itemVariants}
+          >
+            <PlanetNavigation currentPlanetId={id} planets={planets} />
+          </motion.div>
         </motion.div>
-        
-        <AnimatePresence mode="wait">
-          {selectedFact && (
-            <motion.div
-              className="w-full max-w-3xl mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-            >
-              <FactDisplay fact={selectedFact} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-        
-        <motion.div 
-          className="w-full max-w-3xl"
-          variants={itemVariants}
-        >
-          <PlanetNavigation currentPlanetId={id} planets={planets} />
-        </motion.div>
-      </motion.div>
+      </div>
     </main>
   );
 }
