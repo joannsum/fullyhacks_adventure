@@ -1,6 +1,6 @@
 # Voyager3
 
-[Visit Here.](https://fullyhacks-adventure.vercel.app/)
+fullyhacks-adventure.vercel.app
 
 > The Universe at Your Fingertips
 
