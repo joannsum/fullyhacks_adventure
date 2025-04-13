@@ -1,47 +1,63 @@
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import SpaceTravel from './SpaceTravel';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 export default function PlanetNavigation({ currentPlanetId, planets }) {
-  // Find current planet index
-  const currentIndex = planets.findIndex(planet => planet.id === currentPlanetId);
+  const router = useRouter();
+  const [spaceTravel, setSpaceTravel] = useState(null);
   
-  // Get previous and next planets
-  const prevPlanet = currentIndex > 0 ? planets[currentIndex - 1] : null;
-  const nextPlanet = currentIndex < planets.length - 1 ? planets[currentIndex + 1] : null;
+
+  const currentIndex = planets.findIndex(planet => planet.id === currentPlanetId);
+  if (currentIndex === -1) {
+    console.error('Planet not found:', currentPlanetId);
+    return <div>Planet not found</div>;
+  }
+  
+  const currentPlanet = planets[currentIndex];
+  console.log('Current planet:', currentPlanet);
+  
+  // Find adjacent planets
+  const towardSunPlanet = planets.find(p => p.position === currentPlanet.position - 1);
+  const awayFromSunPlanet = planets.find(p => p.position === currentPlanet.position + 1);
+  
+  const startSpaceTravel = (destination) => {
+    console.log('Starting travel to:', destination);
+    setSpaceTravel(destination);
+  };
+  
+  const cancelSpaceTravel = () => {
+    console.log('Canceling travel');
+    setSpaceTravel(null);
+  };
   
   return (
-    <div className="w-full flex justify-between items-center">
-      <div>
-        {prevPlanet && (
-          <Link href={`/planets/${prevPlanet.id}`} passHref>
-            <motion.div
-              className="flex items-center space-x-2 cursor-pointer text-blue-300 hover:text-white"
-              whileHover={{ x: -5, transition: { type: "spring", stiffness: 400 } }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              <span>Previous: {prevPlanet.name}</span>
-            </motion.div>
-          </Link>
-        )}
+    <>
+      <div className="flex gap-4 mt-4">
+        <button 
+          onClick={() => towardSunPlanet && startSpaceTravel(towardSunPlanet.id)} 
+          disabled={!towardSunPlanet}
+          className="bg-amber-500 hover:bg-amber-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-lg transition-colors"
+        >
+          ← Toward Sun
+        </button>
+        
+        <button 
+          onClick={() => awayFromSunPlanet && startSpaceTravel(awayFromSunPlanet.id)} 
+          disabled={!awayFromSunPlanet}
+          className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-lg transition-colors"
+        >
+          Away from Sun →
+        </button>
       </div>
       
-      <div>
-        {nextPlanet && (
-          <Link href={`/planets/${nextPlanet.id}`} passHref>
-            <motion.div
-              className="flex items-center space-x-2 cursor-pointer text-blue-300 hover:text-white"
-              whileHover={{ x: 5, transition: { type: "spring", stiffness: 400 } }}
-            >
-              <span>Next: {nextPlanet.name}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-              </svg>
-            </motion.div>
-          </Link>
-        )}
-      </div>
-    </div>
+      {spaceTravel && (
+        <SpaceTravel 
+          destination={spaceTravel}
+          onCancel={cancelSpaceTravel}
+        />
+      )}
+    </>
   );
 }
