@@ -331,7 +331,7 @@ export default function PlanetPage({ params }) {
       )}
       
       {/* Content area with parallax effect */}
-      <div className="relative z-10 container mx-auto px-4 py-8">
+      <div className="relative z-10 container mx-auto px-20 py-8">
         <motion.div
           className="flex flex-col items-center"
           variants={containerVariants}
@@ -387,23 +387,27 @@ export default function PlanetPage({ params }) {
           </motion.p>
           
           {/* Fact buttons */}
-          <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10 w-full max-w-4xl"
-            variants={itemVariants}
-          >
-            {currentPlanet.facts.map((fact, index) => (
-              <motion.div
-                key={index}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FactButton 
-                  title={fact.title}
-                  onClick={() => setSelectedFact(fact)}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
+          // Inside your PlanetPage component, modify the fact buttons section:
+
+{/* Fact buttons with more consistent spacing */}
+    <motion.div 
+      className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 w-full max-w-3xl"
+      variants={itemVariants}
+    >
+      {currentPlanet.facts.map((fact, index) => (
+        <motion.div
+          key={index}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className="h-full" // Add height to ensure all buttons are same height
+        >
+          <FactButton 
+            title={fact.title}
+            onClick={() => setSelectedFact(fact)}
+          />
+        </motion.div>
+      ))}
+    </motion.div>
           
           {/* Fact display */}
           <AnimatePresence mode="wait">
