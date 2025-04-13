@@ -340,7 +340,7 @@ export default function PlanetPage({ params }) {
         >
           {/* Planet name */}
           <motion.h1 
-            className="text-4xl md:text-5xl font-bold mb-6 text-center"
+            className="font-bungee-hairline text-4xl md:text-5xl mb-6 text-center"
             style={{ textShadow: '0 0 15px rgba(255, 255, 255, 0.5)' }}
             variants={itemVariants}
           >
