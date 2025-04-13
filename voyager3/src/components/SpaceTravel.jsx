@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 export default function SpaceTravel({ destination, onCancel }) {
   const router = useRouter();
   const canvasRef = useRef(null);
+  const audioRef = useRef(null); // Reference for the audio element
   const [catImage, setCatImage] = useState(null);
   const [catFrame, setCatFrame] = useState(0);
   const catFrameRef = useRef(0);
@@ -41,12 +42,19 @@ export default function SpaceTravel({ destination, onCancel }) {
           clearInterval(timer);
           setGameState('success');
           
+          // Play the winning sound
+          if (audioRef.current) {
+            audioRef.current.play().catch(error => {
+              console.error("Audio playback failed:", error);
+            });
+          }
+          
           setTimeout(() => {
             setGameState('navigating');
             setTimeout(() => {
               router.push(`/planets/${destination}`);
             }, 500);
-          }, 500);
+          }, 1500); // Increased the success display time to hear more of the sound
           return 0;
         }
         return prev - 1;
@@ -293,6 +301,20 @@ export default function SpaceTravel({ destination, onCancel }) {
       setShipX(prev => Math.min(canvas.width - 20, prev + 12.0));
     }
   };
+  
+  useEffect(() => {
+    const audio = new Audio('/winning.mp3');
+    audio.volume = 0.6; // volume to 60%
+    audioRef.current = audio;
+    
+    return () => {
+      // Stop audio when component unmounts
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, []);
   
   return (
     <div className="fixed inset-0 bg-black bg-opacity-95 flex flex-col items-center justify-center z-50 p-4">
