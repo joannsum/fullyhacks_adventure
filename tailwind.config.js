@@ -47,16 +47,11 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: [
-          "ui-sans-serif",
-          "system-ui",
-          "sans-serif",
-          '"Apple Color Emoji"',
-          '"Segoe UI Emoji"',
-          '"Segoe UI Symbol"',
-          '"Noto Color Emoji"',
-        ],
+        'bungee-hairline': ['"Bungee Hairline"', 'cursive'],
+        'poppins': ['Poppins', 'sans-serif'],
+        'judson': ['Judson', 'serif']
       },
+      
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

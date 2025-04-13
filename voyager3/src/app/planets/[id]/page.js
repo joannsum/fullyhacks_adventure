@@ -444,7 +444,7 @@ export default function PlanetPage() {
         animate="visible"
       >
         <motion.h1 
-          className="text-3xl md:text-5xl font-bold mb-6 text-center text-white flex items-center gap-3 justify-center"
+          className="text-3xl md:text-5xl font-bungee-hairline mb-6 text-center text-white flex items-center gap-3 justify-center"
           variants={itemVariants}
           style={{ textShadow: '0 0 15px rgba(255, 255, 255, 0.5)' }}
         >
@@ -493,7 +493,7 @@ export default function PlanetPage() {
         </motion.div>
         <motion.div className="flex items-center">
             <motion.p
-                className="relative w-30 h-30 mb-8 md:w-1/5"
+                className="font-bungee-hairline relative w-30 h-30 mb-8 md:w-1/5"
             >
                 <Image
                 src="/sidebooster.png"
@@ -504,7 +504,7 @@ export default function PlanetPage() {
             </motion.p>
 
             <motion.p
-                className="text-center max-w-md mb-8 text-white md:w-4/5 ml-4"
+                className="font-thin text-center max-w-md mb-8 text-white md:w-4/5 ml-4"
                 variants={itemVariants}
             >
                 {description}
@@ -522,6 +522,7 @@ export default function PlanetPage() {
               whileTap={{ scale: 0.95 }}
             >
               <FactButton 
+                className="font-bungee-hairline"
                 title={fact.title}
                 onClick={() => setSelectedFact(fact)}
               />

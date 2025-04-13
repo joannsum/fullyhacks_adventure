@@ -25,14 +25,14 @@ export default function GameOver2({ onRetry, onReturn, destination }) {
       <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4">
         <button
           onClick={onRetry}
-          className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+          className="bg-green-600 hover:bg-green-700 text-white font-bungee-hairline py-2 px-6 rounded-lg transition-colors"
         >
           Try Again
         </button>
         
         <button
           onClick={onReturn}
-          className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+          className="bg-red-600 hover:bg-red-700 text-white font-bungee-hairline py-2 px-6 rounded-lg transition-colors"
         >
           Return to Earth
         </button>
