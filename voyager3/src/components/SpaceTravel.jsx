@@ -358,11 +358,11 @@ export default function SpaceTravel({ destination, onCancel }) {
       <div className="max-w-md w-full bg-gray-900/80 backdrop-blur-md border border-blue-900/30 rounded-xl shadow-2xl overflow-hidden">
         {/* Header bar */}
         <div className="bg-gradient-to-r from-blue-900 to-indigo-900 px-5 py-3 border-b border-blue-800/50 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-white">Space Navigation</h2>
+          <h2 className="text-2xl font-bungee-hairline text-white">Space Navigation</h2>
           <motion.button
             onClick={skipGame}
             className="bg-gradient-to-r from-indigo-600/80 to-blue-700/80 hover:from-indigo-500/90 hover:to-blue-600/90 
-                      text-white font-medium py-1.5 px-4 rounded-full text-sm border border-blue-500/30"
+                      text-white font-bungee-hairline py-1.5 px-4 rounded-full text-sm border border-blue-500/30"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -373,14 +373,14 @@ export default function SpaceTravel({ destination, onCancel }) {
         <div className="p-5">
           {/* Status bar with countdown */}
           <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center text-amber-400 font-bold">
+            <div className="flex items-center text-amber-400 font-bungee-hairline">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
               </svg>
-              <span>Survival countdown: {countdown}s</span>
+              <span className='font-bungee-hairline'>Survival countdown: {countdown}s</span>
             </div>
             
-            <div className="text-blue-200 text-sm">
+            <div className="text-blue-200 text-sm font-bungee-hairline">
               To: <span className="font-medium">{destination.charAt(0).toUpperCase() + destination.slice(1)}</span>
             </div>
           </div>
@@ -405,14 +405,14 @@ export default function SpaceTravel({ destination, onCancel }) {
             
             {gameState === 'success' && (
               <div className="absolute inset-0 bg-gradient-to-b from-green-900/80 to-green-800/80 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg">
-                <div className="text-3xl font-bold text-white">Success!</div>
-                <div className="text-green-200">Navigation complete</div>
+                <div className="text-3xl font-bungee-hairline text-white">Success!</div>
+                <div className="font-bungee-hairline text-green-200">Navigation complete</div>
               </div>
             )}
             
             {gameState === 'navigating' && (
               <div className="absolute inset-0 bg-gradient-to-b from-blue-900/80 to-indigo-900/80 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg">
-                <div className="text-2xl font-bold text-white mb-3">Navigating to {destination}...</div>
+                <div className="text-2xl font-bungee-hairline text-white mb-3">Navigating to {destination}...</div>
                 <div className="flex space-x-3">
                   <div className="w-3 h-3 bg-blue-300 animate-pulse rounded-full delay-0"></div>
                   <div className="w-3 h-3 bg-blue-300 animate-pulse rounded-full delay-300"></div>
@@ -449,8 +449,8 @@ export default function SpaceTravel({ destination, onCancel }) {
           )}
           
           {/* Instructions */}
-          <div className="mt-4 text-blue-200 text-sm text-center bg-blue-900/20 py-2 px-4 rounded-lg">
-            <span className="font-medium">Controls:</span> Use A/D keys, arrow keys, or buttons to dodge asteroids!
+          <div className="font-bungee-hairline mt-4 text-blue-200 text-sm text-center bg-blue-900/20 py-2 px-4 rounded-lg">
+            <span className="font-bungee-hairline">Controls:</span> Use A/D keys, arrow keys, or buttons to dodge asteroids!
           </div>
           
           {/* Cancel button */}
@@ -458,7 +458,7 @@ export default function SpaceTravel({ destination, onCancel }) {
             <motion.button
               onClick={onCancel}
               className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600
-                         text-gray-300 font-medium py-2 px-5 rounded-lg border border-gray-600/50"
+                         text-gray-300 font-bungee-hairline py-2 px-5 rounded-lg border border-gray-600/50"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
             >

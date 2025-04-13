@@ -138,7 +138,7 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
             }}
             whileTap={!towardSunPlanet ? {} : { scale: 0.95 }}
           >
-            <span className="flex items-center justify-center">
+            <span className="flex items-center justify-center font-bungee-hairline">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
@@ -151,7 +151,7 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
         <div className="flex-grow"></div>
         
         {/* Right button (Away from Sun) */}
-        <div className="w-1/3 flex justify-end">
+        <div className="w-1/3 flex justify-end font-bungee-hairline">
           <motion.button 
             onClick={() => awayFromSunPlanet && startSpaceTravel(awayFromSunPlanet.id)} 
             disabled={!awayFromSunPlanet}
@@ -173,15 +173,15 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
       </div>
       
       {/* End Adventure button - now positioned at the bottom with consistent styling */}
-      <div className="flex justify-center mt-20 mb-2">
+      <div className="flex justify-center mt-20 mb-2 font-bungee-hairline">
         <motion.button
           onClick={() => setShowConfirmDialog(true)}
           className="bg-gradient-to-r from-blue-900/80 to-indigo-900/80 hover:from-blue-800/90 hover:to-indigo-800/90
-                    text-blue-100 font-medium py-2 px-5 rounded-full text-sm border border-blue-600/30
+                    text-blue-100 font-bungee-hairline py-2 px-5 rounded-full text-sm border border-blue-600/30
                     shadow-md shadow-blue-900/30 backdrop-blur-sm transition-all"
           whileHover={{ 
             scale: 1.05,
-            boxShadow: "0 0 15px rgba(100, 150, 255, 0.3)"
+            boxShadow: "0 0 15px rgba(100, 150, 255, 0.5)"
           }}
           whileTap={{ scale: 0.95 }}
         >
@@ -211,10 +211,10 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
           >
-            <h3 className="text-xl font-bold text-white mb-1">End Your Space Adventure?</h3>
+            <h3 className="text-xl font-bungee-hairline text-white mb-1">End Your Space Adventure?</h3>
             <div className="w-full h-0.5 bg-gradient-to-r from-blue-700/50 to-transparent mb-4"></div>
             
-            <p className="text-blue-100 mb-6">
+            <p className="font-thin text-blue-100 mb-6">
               Are you sure you want to end your space adventure and return to the beginning?
               Your journey through the solar system will be reset.
             </p>
@@ -222,7 +222,7 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
             <div className="flex space-x-4">
               <motion.button
                 onClick={() => setShowConfirmDialog(false)}
-                className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium py-2 px-4 rounded-lg border border-gray-700/50"
+                className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 font-bungee-hairline py-2 px-4 rounded-lg border border-gray-700/50"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
               >
@@ -232,7 +232,7 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
               <motion.button
                 onClick={endAdventure}
                 className="flex-1 bg-gradient-to-r from-blue-700 to-indigo-800 hover:from-blue-600 hover:to-indigo-700
-                          text-white font-medium py-2 px-4 rounded-lg border border-blue-600/50 shadow-md"
+                          text-white font-bungee-hairline py-2 px-4 rounded-lg border border-blue-600/50 shadow-md"
                 whileHover={{ 
                   scale: 1.03,
                   boxShadow: "0 0 15px rgba(59, 130, 246, 0.3)"
