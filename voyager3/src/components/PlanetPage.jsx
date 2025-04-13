@@ -378,13 +378,25 @@ export default function PlanetPage({ params }) {
             />
           </motion.div>
           
-          {/* Description */}
-          <motion.p 
-            className="text-center max-w-2xl mb-12 text-lg"
-            variants={itemVariants}
+          <motion.div className="flex items-center">
+          <motion.p
+              className="relative w-30 h-30 mb-8 md:w-1/5"
           >
-            {currentPlanet.description}
+              <Image
+              src="/sidebooster.png"
+              alt="rover"
+              fill
+              className="object-contain"
+              />
           </motion.p>
+
+          <motion.p
+              className="text-center max-w-md mb-8 text-white md:w-4/5 ml-4"
+              variants={itemVariants}
+          >
+              {description}
+          </motion.p>
+      </motion.div>
           
           {/* Fact buttons */}
           // Inside your PlanetPage component, modify the fact buttons section:
