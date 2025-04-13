@@ -11,11 +11,6 @@ import FactDisplay from '@/components/FactDisplay';
 import PlanetNavigation from '@/components/PlanetNavigation';
 import GameOver from '@/components/GameOver';
 
-export default function PlanetPage() {
-  // Fix the params warning by using useParams hook
-  const params = useParams();
-  const id = params.id;
-  
 // Star component using framer motion with fixed animation duration
 const Star = ({ style, duration }) => {
   return (
