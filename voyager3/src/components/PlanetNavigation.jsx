@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 export default function PlanetNavigation({ currentPlanetId, planets }) {
   const router = useRouter();
   const [spaceTravel, setSpaceTravel] = useState(null);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   
   const currentIndex = planets.findIndex(planet => planet.id === currentPlanetId);
   if (currentIndex === -1) {
@@ -31,6 +32,11 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
     setSpaceTravel(null);
   };
   
+  // End adventure and return to first page
+  const endAdventure = () => {
+    router.push('/');
+  };
+  
   // Shared button style for consistent look
   const buttonStyle = "bg-gradient-to-r from-blue-900/80 to-indigo-900/80 hover:from-blue-800/90 hover:to-indigo-800/90 " + 
                       "disabled:from-gray-800/70 disabled:to-gray-900/70 disabled:opacity-50 disabled:cursor-not-allowed " + 
@@ -39,7 +45,7 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
   
   return (
     <>
-      {/* Flex container for buttons */}
+      {/* Flex container for navigation buttons */}
       <div className="flex justify-between items-center w-full mt-8 px-4">
         {/* Left button (Toward Sun) */}
         <div className="w-1/3">
@@ -87,11 +93,78 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
         </div>
       </div>
       
+      {/* End Adventure button - now positioned at the bottom with consistent styling */}
+      <div className="flex justify-center mt-20 mb-2">
+        <motion.button
+          onClick={() => setShowConfirmDialog(true)}
+          className="bg-gradient-to-r from-blue-900/80 to-indigo-900/80 hover:from-blue-800/90 hover:to-indigo-800/90
+                    text-blue-100 font-medium py-2 px-5 rounded-full text-sm border border-blue-600/30
+                    shadow-md shadow-blue-900/30 backdrop-blur-sm transition-all"
+          whileHover={{ 
+            scale: 1.05,
+            boxShadow: "0 0 15px rgba(100, 150, 255, 0.3)"
+          }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <span className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd"/>
+            </svg>
+            End Adventure
+          </span>
+        </motion.button>
+      </div>
+      
+      {/* Space travel component */}
       {spaceTravel && (
         <SpaceTravel 
           destination={spaceTravel}
           onCancel={cancelSpaceTravel}
         />
+      )}
+      
+      {/* Confirmation Dialog */}
+      {showConfirmDialog && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/70 backdrop-blur-sm">
+          <motion.div 
+            className="bg-gray-900/90 border border-blue-800/30 rounded-xl p-6 max-w-md w-full mx-4 shadow-xl"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          >
+            <h3 className="text-xl font-bold text-white mb-1">End Your Space Adventure?</h3>
+            <div className="w-full h-0.5 bg-gradient-to-r from-blue-700/50 to-transparent mb-4"></div>
+            
+            <p className="text-blue-100 mb-6">
+              Are you sure you want to end your space adventure and return to the beginning?
+              Your journey through the solar system will be reset.
+            </p>
+            
+            <div className="flex space-x-4">
+              <motion.button
+                onClick={() => setShowConfirmDialog(false)}
+                className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium py-2 px-4 rounded-lg border border-gray-700/50"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                Cancel
+              </motion.button>
+              
+              <motion.button
+                onClick={endAdventure}
+                className="flex-1 bg-gradient-to-r from-blue-700 to-indigo-800 hover:from-blue-600 hover:to-indigo-700
+                          text-white font-medium py-2 px-4 rounded-lg border border-blue-600/50 shadow-md"
+                whileHover={{ 
+                  scale: 1.03,
+                  boxShadow: "0 0 15px rgba(59, 130, 246, 0.3)"
+                }}
+                whileTap={{ scale: 0.97 }}
+              >
+                End Adventure
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
       )}
     </>
   );
