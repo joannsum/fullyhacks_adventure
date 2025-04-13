@@ -9,6 +9,9 @@ export default function SpaceTravel({ destination, onCancel }) {
   const router = useRouter();
   const canvasRef = useRef(null);
   const audioRef = useRef(null); // Reference for the audio element
+  const [catImage, setCatImage] = useState(null);
+  const [catFrame, setCatFrame] = useState(0);
+  const catFrameRef = useRef(0);
   const [countdown, setCountdown] = useState(10);
   const [gameState, setGameState] = useState('playing'); // playing, success, navigating, gameOver2
   const [shipX, setShipX] = useState(200); // Ship's horizontal position
@@ -275,6 +278,16 @@ export default function SpaceTravel({ destination, onCancel }) {
     };
   }, [gameState, shipX, destination, router]);
   
+  /*
+  useEffect(() => {
+    const img = new Image();
+    img.src = '/oneko-sprite.png'; // You’ll need to host this in your public folder
+    img.onload = () => {
+      setCatImage(img);
+    };
+  }, []);
+  */
+
   // Add on-screen controls for mobile/touch devices
   const moveLeft = () => {
     // Direct small movement for better control
