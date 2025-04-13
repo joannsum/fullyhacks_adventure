@@ -3,14 +3,14 @@
         "id": "sun",
         "name": "The Sun",
         "position": 0,
-        "image": "/images/sun.jpg",
+        "image": "/sun.png",
         "description": "You've reached the Sun! Game over - you've been fried!",
         "facts": [
           { "title": "Temperature", "content": "Core temperature of about 27 million degrees Fahrenheit" },
           { "title": "Size", "content": "About 109 times the diameter of Earth" },
           { "title": "Composition", "content": "Primarily hydrogen and helium" }
-        ],
-      },
+        ]
+    },
     {
         "id": "mercury",
         "name": "Mercury",
