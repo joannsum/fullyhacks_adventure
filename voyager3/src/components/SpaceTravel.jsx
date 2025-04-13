@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import GameOver2 from './GameOver2'; // Import the GameOver2 component
+import { motion } from 'framer-motion';
 
 export default function SpaceTravel({ destination, onCancel }) {
   const router = useRouter();
@@ -16,7 +17,6 @@ export default function SpaceTravel({ destination, onCancel }) {
     keys: { a: false, d: false },
     asteroids: [
       { x: 100, y: 50, size: 3, speed: 0.8 },
-    //   { x: 200, y: 0, size: 3, speed: 1.2 },
       { x: 300, y: 100, size: 3, speed: 1 }
     ],
     lastFrameTime: 0
@@ -63,7 +63,6 @@ export default function SpaceTravel({ destination, onCancel }) {
     // Reset asteroids
     gameDataRef.current.asteroids = [
       { x: 100, y: 50, size: 3, speed: 0.8 },
-    //   { x: 200, y: 0, size: 3, speed: 1.2 },
       { x: 300, y: 100, size: 3, speed: 1 }
     ];
     
@@ -217,6 +216,7 @@ export default function SpaceTravel({ destination, onCancel }) {
   function isPointInRectangle(px, py, x1, y1, x2, y2) {
     return px >= x1 && px <= x2 && py >= y1 && py <= y2;
   }
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -280,89 +280,155 @@ export default function SpaceTravel({ destination, onCancel }) {
     }
   };
   
-  
   return (
-    <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50 p-4">
-      <div className="max-w-md w-full">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-2xl font-bold text-white">Space Travel</h2>
-          <button
+    <div className="fixed inset-0 bg-black bg-opacity-95 flex flex-col items-center justify-center z-50 p-4">
+      {/* Added simple static stars in the background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        {[...Array(40)].map((_, i) => (
+          <div 
+            key={`star-${i}`}
+            className="absolute rounded-full bg-white"
+            style={{
+              width: `${(i % 3) + 1}px`,
+              height: `${(i % 3) + 1}px`,
+              left: `${(i * 7.3) % 100}%`,
+              top: `${(i * 11.7) % 100}%`,
+              opacity: i % 2 === 0 ? 0.9 : 0.5
+            }}
+          />
+        ))}
+        {/* Add a few glowing stars */}
+        {[...Array(5)].map((_, i) => (
+          <div 
+            key={`glow-${i}`}
+            className="absolute rounded-full"
+            style={{
+              width: `${(i % 2) + 3}px`,
+              height: `${(i % 2) + 3}px`,
+              left: `${(i * 19) % 100}%`,
+              top: `${(i * 23) % 100}%`,
+              backgroundColor: i % 3 === 0 ? 'rgba(100, 200, 255, 0.8)' : 
+                              i % 3 === 1 ? 'rgba(200, 100, 255, 0.8)' : 
+                                          'rgba(255, 255, 160, 0.8)',
+              boxShadow: i % 3 === 0 ? '0 0 10px 2px rgba(100, 200, 255, 0.8)' : 
+                         i % 3 === 1 ? '0 0 10px 2px rgba(200, 100, 255, 0.8)' : 
+                                     '0 0 10px 2px rgba(255, 255, 160, 0.8)'
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Updated game container with space theme */}
+      <div className="max-w-md w-full bg-gray-900/80 backdrop-blur-md border border-blue-900/30 rounded-xl shadow-2xl overflow-hidden">
+        {/* Header bar */}
+        <div className="bg-gradient-to-r from-blue-900 to-indigo-900 px-5 py-3 border-b border-blue-800/50 flex justify-between items-center">
+          <h2 className="text-2xl font-bold text-white">Space Navigation</h2>
+          <motion.button
             onClick={skipGame}
-            className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-1 px-3 rounded-lg text-sm"
+            className="bg-gradient-to-r from-indigo-600/80 to-blue-700/80 hover:from-indigo-500/90 hover:to-blue-600/90 
+                      text-white font-medium py-1.5 px-4 rounded-full text-sm border border-blue-500/30"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             Skip
-          </button>
+          </motion.button>
         </div>
         
-        <div className="mb-4 text-amber-400 font-bold">
-          Survival countdown: {countdown}s
-        </div>
-        
-        <div className="relative">
-          <canvas 
-            ref={canvasRef}
-            width={400}
-            height={300}
-            className="bg-black w-full rounded-lg border border-gray-800"
-          />
-          
-          {gameState === 'gameOver2' && (
-            <div className="absolute inset-0">
-              <GameOver2 
-                onRetry={handleRetry} 
-                destination={destination}
-              />
+        <div className="p-5">
+          {/* Status bar with countdown */}
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center text-amber-400 font-bold">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+              </svg>
+              <span>Survival countdown: {countdown}s</span>
             </div>
-          )}
-          
-          {gameState === 'success' && (
-            <div className="absolute inset-0 bg-green-900 bg-opacity-70 flex flex-col items-center justify-center rounded-lg">
-              <div className="text-2xl font-bold text-white">Success!</div>
+            
+            <div className="text-blue-200 text-sm">
+              To: <span className="font-medium">{destination.charAt(0).toUpperCase() + destination.slice(1)}</span>
             </div>
-          )}
-          
-          {gameState === 'navigating' && (
-            <div className="absolute inset-0 bg-blue-900 bg-opacity-80 flex flex-col items-center justify-center rounded-lg">
-              <div className="text-2xl font-bold text-white mb-2">Navigating to next planet...</div>
-              <div className="flex space-x-2">
-                <div className="w-3 h-3 bg-white rounded-full"></div>
-                <div className="w-3 h-3 bg-white rounded-full"></div>
-                <div className="w-3 h-3 bg-white rounded-full"></div>
-              </div>
-            </div>
-          )}
-        </div>
-        
-        {gameState === 'playing' && (
-          <div className="mt-4 flex justify-center space-x-10">
-            <button
-              onMouseDown={moveLeft}
-              onTouchStart={moveLeft}
-              className="bg-gray-700 text-white px-6 py-3 rounded-full text-2xl"
-            >
-              ←
-            </button>
-            <button
-              onMouseDown={moveRight}
-              onTouchStart={moveRight}
-              className="bg-gray-700 text-white px-6 py-3 rounded-full text-2xl"
-            >
-              →
-            </button>
           </div>
-        )}
-        
-        <div className="mt-4 text-gray-300 text-sm text-center">
-          Use A/D keys or arrow keys to dodge asteroids!
-        </div>
-        
-        <div className="mt-4 flex justify-end">
-          <button
-            onClick={onCancel}
-            className="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg"
-          >
-            Cancel
-          </button>
+          
+          {/* Game canvas with enhanced border */}
+          <div className="relative">
+            <canvas 
+              ref={canvasRef}
+              width={400}
+              height={300}
+              className="bg-black w-full rounded-lg border border-blue-900/50 shadow-inner shadow-black/50"
+            />
+            
+            {gameState === 'gameOver2' && (
+              <div className="absolute inset-0">
+                <GameOver2 
+                  onRetry={handleRetry} 
+                  destination={destination}
+                />
+              </div>
+            )}
+            
+            {gameState === 'success' && (
+              <div className="absolute inset-0 bg-gradient-to-b from-green-900/80 to-green-800/80 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg">
+                <div className="text-3xl font-bold text-white">Success!</div>
+                <div className="text-green-200">Navigation complete</div>
+              </div>
+            )}
+            
+            {gameState === 'navigating' && (
+              <div className="absolute inset-0 bg-gradient-to-b from-blue-900/80 to-indigo-900/80 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg">
+                <div className="text-2xl font-bold text-white mb-3">Navigating to {destination}...</div>
+                <div className="flex space-x-3">
+                  <div className="w-3 h-3 bg-blue-300 animate-pulse rounded-full delay-0"></div>
+                  <div className="w-3 h-3 bg-blue-300 animate-pulse rounded-full delay-300"></div>
+                  <div className="w-3 h-3 bg-blue-300 animate-pulse rounded-full delay-600"></div>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {/* Updated control buttons */}
+          {gameState === 'playing' && (
+            <div className="mt-5 flex justify-center space-x-16">
+              <motion.button
+                onMouseDown={moveLeft}
+                onTouchStart={moveLeft}
+                className="bg-gradient-to-b from-blue-800 to-blue-900 text-white px-7 py-4 rounded-full text-2xl
+                          shadow-lg shadow-blue-900/30 border border-blue-700/30"
+                whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(59, 130, 246, 0.5)" }}
+                whileTap={{ scale: 0.95 }}
+              >
+                ←
+              </motion.button>
+              <motion.button
+                onMouseDown={moveRight}
+                onTouchStart={moveRight}
+                className="bg-gradient-to-b from-blue-800 to-blue-900 text-white px-7 py-4 rounded-full text-2xl
+                          shadow-lg shadow-blue-900/30 border border-blue-700/30"
+                whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(59, 130, 246, 0.5)" }}
+                whileTap={{ scale: 0.95 }}
+              >
+                →
+              </motion.button>
+            </div>
+          )}
+          
+          {/* Instructions */}
+          <div className="mt-4 text-blue-200 text-sm text-center bg-blue-900/20 py-2 px-4 rounded-lg">
+            <span className="font-medium">Controls:</span> Use A/D keys, arrow keys, or buttons to dodge asteroids!
+          </div>
+          
+          {/* Cancel button */}
+          <div className="mt-5 flex justify-end">
+            <motion.button
+              onClick={onCancel}
+              className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600
+                         text-gray-300 font-medium py-2 px-5 rounded-lg border border-gray-600/50"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              Cancel
+            </motion.button>
+          </div>
         </div>
       </div>
     </div>
