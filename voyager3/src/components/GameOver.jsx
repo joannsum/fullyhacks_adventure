@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef} from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import { use } from 'react'; // Import the use hook from React
@@ -10,7 +10,26 @@ import FactButton from '@/components/FactButton';
 import FactDisplay from '@/components/FactDisplay';
 import PlanetNavigation from '@/components/PlanetNavigation';
 
+
 export default function GameOver() {
+  const audioRef = useRef(null);
+  useEffect(() => {
+    const audio = new Audio('/the-sun-is-a-deadly-laser.mp3');
+    audio.volume = 0.6; // Sets volume to 60%
+    audioRef.current = audio;
+  
+    audio.play().catch((err) => {
+      console.warn('Audio playback failed:', err);
+    });
+
+    return () => {
+      // stops audio when component unmounts
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, []);
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-black">
       <h1 className="text-4xl font-bold mb-6 text-yellow">You've Been Fried by the Sun!</h1>
