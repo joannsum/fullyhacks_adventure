@@ -16,6 +16,18 @@ export const planets = [
     image: "/images/sun.jpg",
   },
   {
+  {
+    id: "sun",
+    name: "The Sun",
+    position: 0,
+    description: "You've reached the Sun! Game over - you've been fried!",
+    facts: [
+      { title: "Temperature", content: "Core temperature of about 27 million degrees Fahrenheit" },
+      // Add more facts
+    ],
+    image: "/images/sun.jpg",
+  },
+  {
       id: "mercury",
       name: "Mercury",
       position: 1, // 1 = closest to sun
@@ -53,3 +65,7 @@ export const planets = [
     
   ];
   */
+=======
+    
+  ];
+>>>>>>> 89607fbfb77b03216fc6f599cfc9318428010766
