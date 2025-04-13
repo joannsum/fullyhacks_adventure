@@ -26,7 +26,7 @@ export const planets = [
     {
       id: "venus",
       name: "Venus",
-      position: 1, // 1 = closest to sun
+      position: 2, // 1 = closest to sun
       description: "The smallest and innermost planet in the Solar System.",
       facts: [
         { title: "Bio", content: "Can reach 800°F (430°C) during the day and -290°F (-180°C) at night" },
@@ -38,7 +38,7 @@ export const planets = [
     {
       id: "earth",
       name: "Probably your home, Earth",
-      position: 2,
+      position: 3,
       description: "you're probably from here. unless you're not",
       facts: [
         { title: "Temperature", content: "you should know enough about it, earthling..." },

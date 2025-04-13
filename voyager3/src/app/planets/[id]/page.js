@@ -1,8 +1,8 @@
-// src/app/planets/[id]/page.js
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { planets } from '@/data/planets';
 import FactButton from '@/components/FactButton';
@@ -10,8 +10,11 @@ import FactDisplay from '@/components/FactDisplay';
 import PlanetNavigation from '@/components/PlanetNavigation';
 import GameOver from '@/components/GameOver';
 
-export default function PlanetPage({ params }) {
-  const { id } = params;
+export default function PlanetPage() {
+  // Fix the params warning by using useParams hook
+  const params = useParams();
+  const id = params.id;
+  
   const router = useRouter();
   const [selectedFact, setSelectedFact] = useState(null);
   

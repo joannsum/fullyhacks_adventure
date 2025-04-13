@@ -1,44 +1,64 @@
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import SpaceTravel from './SpaceTravel';
 
 export default function PlanetNavigation({ currentPlanetId, planets }) {
   const router = useRouter();
+  const [spaceTravel, setSpaceTravel] = useState(null);
   
-  // Find current planet index
+  // Find current planet
   const currentIndex = planets.findIndex(planet => planet.id === currentPlanetId);
+  if (currentIndex === -1) {
+    console.error('Planet not found:', currentPlanetId);
+    return <div>Planet not found</div>;
+  }
   
-  // Determine next and previous planets
-  const nextPlanet = planets[currentIndex - 1] || null; // Toward sun (lower index)
-  const prevPlanet = planets[currentIndex + 1] || null; // Away from sun (higher index)
+  const currentPlanet = planets[currentIndex];
+  console.log('Current planet:', currentPlanet);
   
-  const goToNextPlanet = () => {
-    if (nextPlanet) {
-      router.push(`/planets/${nextPlanet.id}`);
-    }
+  // Find adjacent planets
+  const towardSunPlanet = planets.find(p => p.position === currentPlanet.position - 1);
+  const awayFromSunPlanet = planets.find(p => p.position === currentPlanet.position + 1);
+  
+  console.log('Toward sun:', towardSunPlanet);
+  console.log('Away from sun:', awayFromSunPlanet);
+  
+  const startSpaceTravel = (destination) => {
+    console.log('Starting travel to:', destination);
+    setSpaceTravel(destination);
   };
   
-  const goToPrevPlanet = () => {
-    if (prevPlanet) {
-      router.push(`/planets/${prevPlanet.id}`);
-    }
+  const cancelSpaceTravel = () => {
+    console.log('Canceling travel');
+    setSpaceTravel(null);
   };
   
   return (
-    <div className="flex gap-4 mt-4">
-      <button 
-        onClick={goToNextPlanet} 
-        disabled={!nextPlanet}
-        className="bg-amber-500 hover:bg-amber-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-lg transition-colors"
-      >
-        ← Toward Sun
-      </button>
+    <>
+      <div className="flex gap-4 mt-4">
+        <button 
+          onClick={() => towardSunPlanet && startSpaceTravel(towardSunPlanet.id)} 
+          disabled={!towardSunPlanet}
+          className="bg-amber-500 hover:bg-amber-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-lg transition-colors"
+        >
+          ← Toward Sun
+        </button>
+        
+        <button 
+          onClick={() => awayFromSunPlanet && startSpaceTravel(awayFromSunPlanet.id)} 
+          disabled={!awayFromSunPlanet}
+          className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-lg transition-colors"
+        >
+          Away from Sun →
+        </button>
+      </div>
       
-      <button 
-        onClick={goToPrevPlanet} 
-        disabled={!prevPlanet}
-        className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-lg transition-colors"
-      >
-        Away from Sun →
-      </button>
-    </div>
+      {spaceTravel && (
+        <SpaceTravel 
+          destination={spaceTravel}
+          onCancel={cancelSpaceTravel}
+        />
+      )}
+    </>
   );
 }
