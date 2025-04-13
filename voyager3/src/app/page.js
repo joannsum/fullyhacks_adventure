@@ -1,8 +1,11 @@
-// src/app/page.js
-import Link from "next/link";
-import Image from "next/image";
+"use client";
+import dynamic from "next/dynamic";
+
+// Use dynamic import to prevent hydration errors with framer-motion
+const SpaceExplorer = dynamic(() => import("@/components/SpaceExplorer"), { ssr: false });
 
 export default function Home() {
+<<<<<<< HEAD
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center">
       <h1 className="text-4xl font-bold mb-6">Solar System Explorer</h1>
@@ -25,3 +28,8 @@ export default function Home() {
     </div>
   );
 }
+=======
+  return <SpaceExplorer />; 
+} 
+
+>>>>>>> 89607fbfb77b03216fc6f599cfc9318428010766
