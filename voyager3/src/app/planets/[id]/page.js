@@ -383,7 +383,7 @@ export default function PlanetPage({ params }) {
           className="text-center max-w-md mb-8 text-white"
           variants={itemVariants}
         >
-          {currentPlanet.description}
+          {currentPlanet.bio}
         </motion.p>
         
         <motion.div 

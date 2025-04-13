@@ -16,7 +16,7 @@
         "name": "Venus",
         "position": 2,
         "image": "/venus.png",
-        "bio": "Earth's closest planetary neighbor and similar in structure and size, Venus is sometimes called Earth's evil twin. Venus is the third brightest object in the sky after the Sun and Moon, and spins slowly in the opposite direction from most planets.",
+        "bio": "Earth's \"evil twin\", closest in structure and size. Venus is the third brightest object in the sky after the Sun and Moon, and spins slowly in the opposite direction from most planets.",
         "facts": [
             {"title": "Surface Temperature", "content": "Temperatures range from 86 to 158 Fahrenheit (30 to 70 Celsius), hot enough to melt lead, making it the hottest planet in our solar system."},
             {"title": "Day Length", "content": "243 Earth days"},
