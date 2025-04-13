@@ -492,24 +492,24 @@ export default function PlanetPage() {
           />
         </motion.div>
         <motion.div className="flex items-center">
-  <motion.p
-    className="relative w-30 h-30 mb-8 md:w-1/5"
-  >
-    <Image
-      src="/sidebooster.png" // You'll need this image
-      alt="rover"
-      fill
-      className="object-contain"
-    />
-  </motion.p>
+            <motion.p
+                className="relative w-30 h-30 mb-8 md:w-1/5"
+            >
+                <Image
+                src="/sidebooster.png"
+                alt="rover"
+                fill
+                className="object-contain"
+                />
+            </motion.p>
 
-  <motion.p
-    className="text-center max-w-md mb-8 text-white md:w-4/5 ml-4"
-    variants={itemVariants}
-  >
-    {description}
-  </motion.p>
-</motion.div>
+            <motion.p
+                className="text-center max-w-md mb-8 text-white md:w-4/5 ml-4"
+                variants={itemVariants}
+            >
+                {description}
+            </motion.p>
+        </motion.div>
         
         <motion.div 
           className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 w-full max-w-3xl"
