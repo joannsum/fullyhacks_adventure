@@ -1,9 +1,11 @@
+
+
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 
-// Star component using framer motion
-const Star = ({ style }) => {
+// Star component using framer motion with fixed animation duration
+const Star = ({ style, duration }) => {
   return (
     <motion.div
       className="absolute rounded-full bg-white"
@@ -14,7 +16,7 @@ const Star = ({ style }) => {
       }}
       transition={{ 
         repeat: Infinity, 
-        duration: Math.random() * 3 + 3,
+        duration: duration, // Use pre-computed duration
         ease: "easeInOut"
       }}
       style={style}
@@ -22,8 +24,8 @@ const Star = ({ style }) => {
   );
 };
 
-// Orbiting planet component
-const OrbitingPlanet = ({ size, color, orbitRadius, speed }) => {
+// Orbiting planet component with fixed animation duration
+const OrbitingPlanet = ({ size, color, orbitRadius, speed, pulseDuration }) => {
   return (
     <motion.div
       className="absolute rounded-full"
@@ -56,53 +58,54 @@ const OrbitingPlanet = ({ size, color, orbitRadius, speed }) => {
         }}
         transition={{
           repeat: Infinity,
-          duration: 3 + Math.random() * 2
+          duration: pulseDuration // Use pre-computed duration
         }}
       />
     </motion.div>
   );
 };
 
-// Space dust particles
-const SpaceDust = ({ count = 30 }) => {
+// Space dust with pre-computed values
+const SpaceDust = ({ particles }) => {
   return (
     <>
-      {[...Array(count)].map((_, i) => {
-        const size = Math.random() * 2 + 0.5;
-        const xPos = Math.random() * 100;
-        const yPos = Math.random() * 100;
-        const duration = Math.random() * 10 + 15;
-        
-        return (
-          <motion.div
-            key={`dust-${i}`}
-            className="absolute rounded-full bg-white/20"
-            style={{
-              width: size,
-              height: size,
-              left: `${xPos}%`,
-              top: `${yPos}%`,
-            }}
-            animate={{
-              y: [0, Math.random() * 30 - 15],
-              x: [0, Math.random() * 30 - 15],
-              opacity: [0.2, 0.4, 0.2]
-            }}
-            transition={{
-              repeat: Infinity,
-              duration,
-              ease: "easeInOut"
-            }}
-          />
-        );
-      })}
+      {particles.map((particle, i) => (
+        <motion.div
+          key={`dust-${i}`}
+          className="absolute rounded-full bg-white/20"
+          style={{
+            width: particle.size,
+            height: particle.size,
+            left: `${particle.xPos}%`,
+            top: `${particle.yPos}%`,
+          }}
+          animate={{
+            y: [0, particle.yOffset],
+            x: [0, particle.xOffset],
+            opacity: [0.2, 0.4, 0.2]
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: particle.duration,
+            ease: "easeInOut"
+          }}
+        />
+      ))}
     </>
   );
 };
 
 const SpaceExplorer = () => {
-  // State for stars and mouse position
+  // State for stars, dust particles and client detection
   const [stars, setStars] = useState([]);
+  const [dustParticles, setDustParticles] = useState([]);
+  const [isClient, setIsClient] = useState(false);
+  const [planetParams] = useState({
+    planet1: { size: 12, color: "rgba(255, 107, 107, 0.8)", orbitRadius: 100, speed: 20, pulseDuration: 4 },
+    planet2: { size: 18, color: "rgba(100, 200, 255, 0.8)", orbitRadius: 150, speed: 35, pulseDuration: 5 },
+    planet3: { size: 10, color: "rgba(255, 222, 125, 0.8)", orbitRadius: 200, speed: 45, pulseDuration: 3.5 }
+  });
+  
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
@@ -117,35 +120,50 @@ const SpaceExplorer = () => {
   const nebula2X = useTransform(smoothMouseX, [0, 1000], [-20, 20]);
   const nebula2Y = useTransform(smoothMouseY, [0, 1000], [-20, 20]);
 
-  // Generate random stars and handle mouse movement
+  // Mark as client-side rendering and generate all random values once
   useEffect(() => {
-    // Generate stars
-    if (typeof window !== 'undefined') {
-      const newStars = [];
-      const starCount = Math.floor(window.innerWidth * window.innerHeight / 3000);
-      
-      for (let i = 0; i < starCount; i++) {
-        newStars.push({
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-          width: `${Math.random() * 2 + 1}px`,
-          height: `${Math.random() * 2 + 1}px`,
-        });
-      }
-      
-      setStars(newStars);
-      
-      // Mouse movement handler
-      const handleMouseMove = (e) => {
-        mouseX.set(e.clientX);
-        mouseY.set(e.clientY);
-      };
-      
-      window.addEventListener("mousemove", handleMouseMove);
-      return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-      };
+    setIsClient(true);
+    
+    // Generate stars with fixed random values
+    const newStars = [];
+    const starCount = 150; // Fixed count, not dependent on window size
+    
+    for (let i = 0; i < starCount; i++) {
+      newStars.push({
+        left: `${(i * 7.3) % 100}%`, // Deterministic position based on index
+        top: `${(i * 11.7) % 100}%`, // Deterministic position based on index
+        width: `${(i % 3) + 1}px`, // 1px, 2px, or 3px
+        height: `${(i % 3) + 1}px`, // 1px, 2px, or 3px
+        duration: 3 + (i % 5) // 3-7 seconds duration
+      });
     }
+    
+    // Generate dust particles with fixed random values
+    const newDust = [];
+    for (let i = 0; i < 30; i++) {
+      newDust.push({
+        size: 0.5 + (i % 4) * 0.5, // 0.5px to 2px
+        xPos: (i * 3.3) % 100, // Deterministic position
+        yPos: (i * 5.7) % 100, // Deterministic position
+        yOffset: ((i % 30) - 15), // -15px to +14px
+        xOffset: ((i % 30) - 15), // -15px to +14px
+        duration: 15 + (i % 10) // 15-24 seconds
+      });
+    }
+    
+    setStars(newStars);
+    setDustParticles(newDust);
+    
+    // Mouse movement handler - only added on client side
+    const handleMouseMove = (e) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+    
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, [mouseX, mouseY]);
 
   // Data for the main content
@@ -200,39 +218,65 @@ const SpaceExplorer = () => {
 
   return (
     <main className="bg-black flex flex-row justify-center w-full min-h-screen overflow-hidden">
-      {/* Stars background */}
-      <div className="absolute inset-0 overflow-hidden">
-        {stars.map((style, index) => (
-          <Star key={`star-${index}`} style={style} />
-        ))}
-        
-        {/* Space dust */}
-        <SpaceDust count={30} />
-      </div>
+      {/* Stars background - only render on client side */}
+      {isClient && (
+        <div className="absolute inset-0 overflow-hidden">
+          {stars.map((star, index) => (
+            <Star key={`star-${index}`} style={star} duration={star.duration} />
+          ))}
+          
+          {/* Space dust */}
+          <SpaceDust particles={dustParticles} />
+        </div>
+      )}
 
-      {/* Orbiting planets */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
-        <OrbitingPlanet size={12} color="rgba(255, 107, 107, 0.8)" orbitRadius={100} speed={20} />
-        <OrbitingPlanet size={18} color="rgba(100, 200, 255, 0.8)" orbitRadius={150} speed={35} />
-        <OrbitingPlanet size={10} color="rgba(255, 222, 125, 0.8)" orbitRadius={200} speed={45} />
-      </div>
+      {/* Orbiting planets - only render on client side */}
+      {isClient && (
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
+          <OrbitingPlanet 
+            size={planetParams.planet1.size} 
+            color={planetParams.planet1.color} 
+            orbitRadius={planetParams.planet1.orbitRadius} 
+            speed={planetParams.planet1.speed} 
+            pulseDuration={planetParams.planet1.pulseDuration}
+          />
+          <OrbitingPlanet 
+            size={planetParams.planet2.size} 
+            color={planetParams.planet2.color} 
+            orbitRadius={planetParams.planet2.orbitRadius} 
+            speed={planetParams.planet2.speed}
+            pulseDuration={planetParams.planet2.pulseDuration}
+          />
+          <OrbitingPlanet 
+            size={planetParams.planet3.size} 
+            color={planetParams.planet3.color} 
+            orbitRadius={planetParams.planet3.orbitRadius} 
+            speed={planetParams.planet3.speed}
+            pulseDuration={planetParams.planet3.pulseDuration}
+          />
+        </div>
+      )}
 
-      {/* Dynamic nebula effects */}
-      <motion.div 
-        className="absolute top-1/3 -right-40 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl"
-        style={{ 
-          x: nebulaX,
-          y: nebulaY
-        }}
-      />
-      
-      <motion.div 
-        className="absolute bottom-1/3 -left-40 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl"
-        style={{ 
-          x: nebula2X,
-          y: nebula2Y
-        }}
-      />
+      {/* Dynamic nebula effects - only render on client side */}
+      {isClient && (
+        <>
+          <motion.div 
+            className="absolute top-1/3 -right-40 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl"
+            style={{ 
+              x: nebulaX,
+              y: nebulaY
+            }}
+          />
+          
+          <motion.div 
+            className="absolute bottom-1/3 -left-40 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl"
+            style={{ 
+              x: nebula2X,
+              y: nebula2Y
+            }}
+          />
+        </>
+      )}
       
       {/* Main content */}
       <section className="relative z-10 w-full max-w-[1280px] min-h-screen flex items-center justify-center">

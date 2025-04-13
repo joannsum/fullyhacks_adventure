@@ -5,5 +5,5 @@ import dynamic from "next/dynamic";
 const SpaceExplorer = dynamic(() => import("@/components/SpaceExplorer"), { ssr: false });
 
 export default function Home() {
-  return <SpaceExplorer />;
-}
+  return <SpaceExplorer />; 
+} 
