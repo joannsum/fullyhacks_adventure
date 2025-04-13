@@ -16,7 +16,7 @@ export default function Home() {
         className="rounded-lg mb-8"
       />
       
-      <Link href="/planets/mercury" 
+      <Link href="/planets/earth" 
         className="rounded-full bg-blue-600 hover:bg-blue-700 transition-colors text-white font-medium text-lg py-3 px-8">
         Start Exploration
       </Link>
