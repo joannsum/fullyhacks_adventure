@@ -233,7 +233,7 @@ const SpaceExplorer = () => {
         >
           <motion.div className="flex flex-col items-center" variants={itemVariants}>
             <motion.h1
-              className="font-bungee-hairline text-white text-[40px] sm:text-[60px] md:text-[80px] lg:text-[90px] leading-tight"
+              className="text-white text-[40px] sm:text-[60px] md:text-[80px] lg:text-[90px] leading-tight"
               style={{ textShadow: '0 0 20px rgba(100, 200, 255, 0.9)' }}
               animate={{ textShadow: ['0 0 20px rgba(100, 200, 255, 0.9)', '0 0 30px rgba(100, 200, 255, 1.0)', '0 0 20px rgba(100, 200, 255, 0.9)'] }}
               transition={{ repeat: Infinity, duration: 3 }}
@@ -252,7 +252,7 @@ const SpaceExplorer = () => {
               className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white rounded-full px-4 py-2 sm:px-6 sm:py-2.5 md:px-8 md:py-3 cursor-pointer w-full max-w-xs sm:max-w-sm md:max-w-md text-center"
               variants={buttonVariants}
             >
-              <span className="font-bungee-hairline text-base sm:text-lg md:text-xl">
+              <span className="text-base sm:text-lg md:text-xl">
                 {pageContent.buttonText}
               </span>
             </motion.div>

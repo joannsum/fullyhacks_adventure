@@ -138,7 +138,7 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
             }}
             whileTap={!towardSunPlanet ? {} : { scale: 0.95 }}
           >
-            <span className="flex items-center justify-center font-bungee-hairline">
+            <span className="flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
@@ -151,7 +151,7 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
         <div className="flex-grow"></div>
         
         {/* Right button (Away from Sun) */}
-        <div className="w-1/3 flex justify-end font-bungee-hairline">
+        <div className="w-1/3 flex justify-end">
           <motion.button 
             onClick={() => awayFromSunPlanet && startSpaceTravel(awayFromSunPlanet.id)} 
             disabled={!awayFromSunPlanet}
@@ -173,11 +173,11 @@ export default function PlanetNavigation({ currentPlanetId, planets }) {
       </div>
       
       {/* End Adventure button - now positioned at the bottom with consistent styling */}
-      <div className="flex justify-center mt-20 mb-2 font-bungee-hairline">
+      <div className="flex justify-center mt-20 mb-2">
         <motion.button
           onClick={() => setShowConfirmDialog(true)}
           className="bg-gradient-to-r from-blue-900/80 to-indigo-900/80 hover:from-blue-800/90 hover:to-indigo-800/90
-                    text-blue-100 font-bungee-hairline py-2 px-5 rounded-full text-sm border border-blue-600/30
+                    text-blue-100 py-2 px-5 rounded-full text-sm border border-blue-600/30
                     shadow-md shadow-blue-900/30 backdrop-blur-sm transition-all"
           whileHover={{ 
             scale: 1.05,

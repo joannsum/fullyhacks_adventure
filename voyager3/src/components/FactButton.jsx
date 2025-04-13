@@ -9,7 +9,7 @@ export default function FactButton({ title, onClick }) {
                 transition-all shadow-lg shadow-blue-900/20 w-full h-full flex items-center justify-center
                 min-h-[60px]"
     >
-      <div className="font-bungee-hairline text-lg text-center">{title}</div>
+      <div className="text-lg text-center">{title}</div>
     </button>
   );
 }
