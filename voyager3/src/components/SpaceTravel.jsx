@@ -7,7 +7,7 @@ import GameOver2 from './GameOver2'; // Import the GameOver2 component
 export default function SpaceTravel({ destination, onCancel }) {
   const router = useRouter();
   const canvasRef = useRef(null);
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(10);
   const [gameState, setGameState] = useState('playing'); // playing, success, navigating, gameOver2
   const [shipX, setShipX] = useState(200); // Ship's horizontal position
   

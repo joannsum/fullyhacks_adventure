@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
+import { use } from 'react'; // Import the use hook from React
 import Image from 'next/image';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { planets } from '@/data/planets';
@@ -108,21 +109,22 @@ const NebulaCloud = ({ style }) => {
 };
 
 export default function PlanetPage({ params }) {
-  const { id } = params;
-  const router = useRouter();
-  const [selectedFact, setSelectedFact] = useState(null);
-  const [stars, setStars] = useState([]);
-  const [dustParticles, setDustParticles] = useState([]);
-  const [glowingStars, setGlowingStars] = useState([]);
-  const [nebulaClouds, setNebulaClouds] = useState([]);
-  const [isClient, setIsClient] = useState(false);
+    const unwrappedParams = use(params);
+    const { id } = unwrappedParams;
+    const router = useRouter();
+    const [selectedFact, setSelectedFact] = useState(null);
+    const [stars, setStars] = useState([]);
+    const [dustParticles, setDustParticles] = useState([]);
+    const [glowingStars, setGlowingStars] = useState([]);
+    const [nebulaClouds, setNebulaClouds] = useState([]);
+    const [isClient, setIsClient] = useState(false);
   
-  // Mouse parallax effect
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springConfig = { stiffness: 100, damping: 30 };
-  const smoothMouseX = useSpring(mouseX, springConfig);
-  const smoothMouseY = useSpring(mouseY, springConfig);
+    // Mouse parallax effect
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+    const springConfig = { stiffness: 100, damping: 30 };
+    const smoothMouseX = useSpring(mouseX, springConfig);
+    const smoothMouseY = useSpring(mouseY, springConfig);
   
   // Find the current planet
   const currentPlanet = planets.find(planet => planet.id === id);
