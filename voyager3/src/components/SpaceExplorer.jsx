@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
@@ -16,10 +14,56 @@ const Star = ({ style, duration }) => {
       }}
       transition={{ 
         repeat: Infinity, 
-        duration: duration, // Use pre-computed duration
+        duration: duration,
         ease: "easeInOut"
       }}
       style={style}
+    />
+  );
+};
+
+// Larger star with glow effect
+const GlowingStar = ({ style, duration, color }) => {
+  return (
+    <motion.div
+      className="absolute rounded-full"
+      style={{
+        ...style,
+        boxShadow: `0 0 10px 2px ${color}`,
+        backgroundColor: color,
+      }}
+      animate={{ 
+        opacity: [0.6, 1, 0.6],
+        boxShadow: [
+          `0 0 10px 2px ${color}`,
+          `0 0 20px 4px ${color}`,
+          `0 0 10px 2px ${color}`
+        ]
+      }}
+      transition={{ 
+        repeat: Infinity, 
+        duration: duration,
+        ease: "easeInOut"
+      }}
+    />
+  );
+};
+
+// Nebula cloud effect
+const NebulaCloud = ({ style }) => {
+  return (
+    <motion.div
+      className="absolute rounded-full blur-3xl opacity-10"
+      style={style}
+      animate={{ 
+        scale: [1, 1.1, 1],
+        opacity: [0.05, 0.15, 0.05]
+      }}
+      transition={{ 
+        repeat: Infinity, 
+        duration: 15 + Math.random() * 10,
+        ease: "easeInOut"
+      }}
     />
   );
 };
@@ -58,7 +102,7 @@ const OrbitingPlanet = ({ size, color, orbitRadius, speed, pulseDuration }) => {
         }}
         transition={{
           repeat: Infinity,
-          duration: pulseDuration // Use pre-computed duration
+          duration: pulseDuration
         }}
       />
     </motion.div>
@@ -99,6 +143,8 @@ const SpaceExplorer = () => {
   // State for stars, dust particles and client detection
   const [stars, setStars] = useState([]);
   const [dustParticles, setDustParticles] = useState([]);
+  const [glowingStars, setGlowingStars] = useState([]);
+  const [nebulaClouds, setNebulaClouds] = useState([]);
   const [isClient, setIsClient] = useState(false);
   const [planetParams] = useState({
     planet1: { size: 12, color: "rgba(255, 107, 107, 0.8)", orbitRadius: 100, speed: 20, pulseDuration: 4 },
@@ -124,35 +170,77 @@ const SpaceExplorer = () => {
   useEffect(() => {
     setIsClient(true);
     
-    // Generate stars with fixed random values
+    // Generate stars with fixed random values - INCREASED COUNT TO 300
     const newStars = [];
-    const starCount = 150; // Fixed count, not dependent on window size
+    const starCount = 300; // Increased from 150
     
     for (let i = 0; i < starCount; i++) {
       newStars.push({
-        left: `${(i * 7.3) % 100}%`, // Deterministic position based on index
-        top: `${(i * 11.7) % 100}%`, // Deterministic position based on index
-        width: `${(i % 3) + 1}px`, // 1px, 2px, or 3px
-        height: `${(i % 3) + 1}px`, // 1px, 2px, or 3px
-        duration: 3 + (i % 5) // 3-7 seconds duration
+        left: `${(i * 7.3) % 100}%`,
+        top: `${(i * 11.7) % 100}%`,
+        width: `${(i % 3) + 1}px`,
+        height: `${(i % 3) + 1}px`,
+        duration: 3 + (i % 5)
       });
     }
     
-    // Generate dust particles with fixed random values
+    // Generate glowing stars - NEW ADDITION
+    const newGlowingStars = [];
+    const glowingStarColors = [
+      "rgba(100, 200, 255, 0.8)", // Blue
+      "rgba(255, 170, 100, 0.8)", // Orange
+      "rgba(200, 100, 255, 0.8)", // Purple
+      "rgba(255, 255, 160, 0.8)", // Yellow
+      "rgba(255, 120, 120, 0.8)", // Red
+    ];
+    
+    for (let i = 0; i < 15; i++) {
+      newGlowingStars.push({
+        left: `${(i * 19.5) % 100}%`,
+        top: `${(i * 23.7) % 100}%`,
+        width: `${(i % 3) + 3}px`,
+        height: `${(i % 3) + 3}px`,
+        duration: 6 + (i % 7),
+        color: glowingStarColors[i % glowingStarColors.length]
+      });
+    }
+    
+    // Generate nebula clouds - NEW ADDITION
+    const newNebulaClouds = [];
+    const nebulaColors = [
+      "rgba(80, 120, 200, 0.1)",
+      "rgba(130, 80, 170, 0.1)",
+      "rgba(180, 100, 100, 0.1)",
+      "rgba(100, 170, 130, 0.1)",
+    ];
+    
+    for (let i = 0; i < 6; i++) {
+      newNebulaClouds.push({
+        left: `${(i * 25) % 100}%`,
+        top: `${(i * 37) % 100}%`,
+        width: `${200 + (i * 50)}px`,
+        height: `${150 + (i * 30)}px`,
+        backgroundColor: nebulaColors[i % nebulaColors.length]
+      });
+    }
+    
+    // Generate dust particles with fixed random values - INCREASED COUNT TO 60
     const newDust = [];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 60; i++) { // Increased from 30
       newDust.push({
-        size: 0.5 + (i % 4) * 0.5, // 0.5px to 2px
-        xPos: (i * 3.3) % 100, // Deterministic position
-        yPos: (i * 5.7) % 100, // Deterministic position
-        yOffset: ((i % 30) - 15), // -15px to +14px
-        xOffset: ((i % 30) - 15), // -15px to +14px
-        duration: 15 + (i % 10) // 15-24 seconds
+        size: 0.5 + (i % 4) * 0.5,
+        xPos: (i * 3.3) % 100,
+        yPos: (i * 5.7) % 100,
+        yOffset: ((i % 30) - 15),
+        xOffset: ((i % 30) - 15),
+        duration: 15 + (i % 10)
       });
     }
     
     setStars(newStars);
     setDustParticles(newDust);
+    setGlowingStars(newGlowingStars);
+    setNebulaClouds(newNebulaClouds);
     
     // Mouse movement handler - only added on client side
     const handleMouseMove = (e) => {
@@ -221,8 +309,24 @@ const SpaceExplorer = () => {
       {/* Stars background - only render on client side */}
       {isClient && (
         <div className="absolute inset-0 overflow-hidden">
+          {/* Nebula clouds for depth */}
+          {nebulaClouds.map((cloud, index) => (
+            <NebulaCloud key={`nebula-${index}`} style={cloud} />
+          ))}
+          
+          {/* Regular stars */}
           {stars.map((star, index) => (
             <Star key={`star-${index}`} style={star} duration={star.duration} />
+          ))}
+          
+          {/* Glowing stars */}
+          {glowingStars.map((star, index) => (
+            <GlowingStar 
+              key={`glow-${index}`} 
+              style={star} 
+              duration={star.duration}
+              color={star.color}
+            />
           ))}
           
           {/* Space dust */}
