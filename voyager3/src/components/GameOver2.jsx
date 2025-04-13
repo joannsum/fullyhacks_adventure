@@ -3,17 +3,12 @@ import Image from 'next/image';
 
 export default function GameOver2({ onRetry, onReturn, destination }) {
   return (
-    <div className="absolute inset-0 bg-gray-900 bg-opacity-90 flex flex-col items-center justify-center rounded-lg p-4">   
+    <div className="absolute inset-0 bg-gray-900 bg-opacity-90 flex flex-col items-center justify-center rounded-lg p-4">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-red-500">Your Ship Was Destroyed by Asteroids!</h1>
+      
       <div className="relative w-32 h-32 mb-4">
         <div className="w-full h-full flex items-center justify-center">
-          <div className="text-5xl text-yellow-500">
-            <Image
-              src="/asteroid.png"
-              alt="asteroid"
-              width={200}
-              height={200}
-            />
-          </div>
+          <div className="text-5xl text-yellow-500">💥</div>
         </div>
       </div>
       
@@ -30,12 +25,11 @@ export default function GameOver2({ onRetry, onReturn, destination }) {
           Try Again
         </button>
         
-        <button
-          onClick={onReturn}
-          className="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg transition-colors"
-        >
-          Return to Earth
-        </button>
+        <Link href="/"
+        className="bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 px-6 rounded-lg transition-colors">
+        Return To Start
+      </Link>
+
       </div>
     </div>
   );
