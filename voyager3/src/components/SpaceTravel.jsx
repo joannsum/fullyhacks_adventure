@@ -371,7 +371,7 @@ export default function SpaceTravel({ destination, onCancel }) {
         </div>
         
         <div className="p-5">
-          {/* Status bar with countdown */}voyager3/public/asteroid.png
+          {/* Status bar with countdown */}
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center text-amber-400 font-bungee-hairline">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
